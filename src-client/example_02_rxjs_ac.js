@@ -1,7 +1,7 @@
 import $ from "jquery";
 // import the fromEvent operator
 import { fromEvent } from 'rxjs';
-import { map, distinctUntilChanged, debounceTime, mergeMap } from 'rxjs/operators';
+import { map, distinctUntilChanged, debounceTime, switchMap } from 'rxjs/operators';
 
 const $title = $("#title");
 const $results = $("#results");
@@ -11,7 +11,7 @@ const queries$ = keyUps$
     .pipe(map(e => e.target.value))
     .pipe(distinctUntilChanged())
     .pipe(debounceTime(250))
-    .pipe(mergeMap(getItems)); // flatMap / SelectMany
+    .pipe(switchMap(getItems)); // flatMapLatest
 
 queries$.subscribe(items => {
     $results.empty();
