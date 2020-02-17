@@ -1,4 +1,4 @@
-import { Subject, interval } from "rxjs";
+import { Subject, interval, BehaviorSubject } from "rxjs";
 import { createSubscriber } from "./lib/util";
 import { take, map } from "rxjs/operators";
 
@@ -22,16 +22,16 @@ import { take, map } from "rxjs/operators";
 //     intervalSubject$.subscribe(createSubscriber("Look at me!"));
 // }, 3000)
 
-const currentUser$ = new Subject();
+const currentUser$ = new BehaviorSubject({ isLoggedIn: false });
 const isLoggedIn$ = currentUser$.pipe(map(u => u.isLoggedIn));
 
+currentUser$.next({ isLoggedIn: false });
 isLoggedIn$.subscribe(createSubscriber("isLoggedIn"));
 
-currentUser$.next({ isLoggedIn: false });
 setTimeout(() => {
     currentUser$.next({ isLoggedIn: true, name: "juan" });
-}, 2000)
+}, 3000)
 
 setTimeout(() => {
     isLoggedIn$.subscribe(createSubscriber("delayed"));
-}, 1000);
+}, 1500);
