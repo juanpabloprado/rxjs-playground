@@ -1,4 +1,4 @@
-import { of, from, throwError, empty, defer } from "rxjs";
+import { of, from, throwError, empty, defer, never } from "rxjs";
 import { createSubscriber } from "./lib/util";
 
 of(["this is an array", "hey"]).subscribe(createSubscriber("of"))
@@ -18,3 +18,5 @@ const defer$ = defer(() => {
 defer$.subscribe(createSubscriber("defer$.one"));
 defer$.subscribe(createSubscriber("defer$.two"));
 defer$.subscribe(createSubscriber("defer$.three"));
+
+never().subscribe(createSubscriber("never"));
