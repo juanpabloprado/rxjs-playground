@@ -1,5 +1,4 @@
 import { Observable } from "rxjs"
-import { take } from 'rxjs/operators';
 
 const createSubscriber = tag => {
     return {
@@ -21,5 +20,23 @@ const createInterval$ = time => {
     });
 }
 
+const take$ = (sourceObservable$, amount) => {
+    return new Observable(observer => {
+        let count = 0;
+        const subscription = sourceObservable$.subscribe({
+            next: item => {
+                observer.next(item);
+                if(++count >= amount)
+                    observer.complete();
+            },
+            error: error => observer.error(error),
+            complete: () => observer.complete
+        });
+
+        return () => subscription.unsubscribe();
+    })
+}
+
 const everySecond$ = createInterval$(1000);
-const subscription = everySecond$.pipe(take(3)).subscribe(createSubscriber("one"));
+const firstFiveSeconds$ = take$(everySecond$, 5);
+const subscription = firstFiveSeconds$.subscribe(createSubscriber("one"));
