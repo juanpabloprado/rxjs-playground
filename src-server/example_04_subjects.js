@@ -31,3 +31,7 @@ currentUser$.next({ isLoggedIn: false });
 setTimeout(() => {
     currentUser$.next({ isLoggedIn: true, name: "juan" });
 }, 2000)
+
+setTimeout(() => {
+    isLoggedIn$.subscribe(createSubscriber("delayed"));
+}, 1000);
