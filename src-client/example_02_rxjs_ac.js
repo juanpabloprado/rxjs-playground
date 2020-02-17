@@ -1,5 +1,4 @@
 import $ from "jquery";
-// import the fromEvent operator
 import { fromEvent } from 'rxjs';
 import { map, distinctUntilChanged, debounceTime, switchMap } from 'rxjs/operators';
 
