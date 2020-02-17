@@ -1,4 +1,4 @@
-import { Subject, interval, BehaviorSubject } from "rxjs";
+import { Subject, interval, BehaviorSubject, ReplaySubject } from "rxjs";
 import { createSubscriber } from "./lib/util";
 import { take, map } from "rxjs/operators";
 
@@ -22,16 +22,30 @@ import { take, map } from "rxjs/operators";
 //     intervalSubject$.subscribe(createSubscriber("Look at me!"));
 // }, 3000)
 
-const currentUser$ = new BehaviorSubject({ isLoggedIn: false });
-const isLoggedIn$ = currentUser$.pipe(map(u => u.isLoggedIn));
+// const currentUser$ = new BehaviorSubject({ isLoggedIn: false });
+// const isLoggedIn$ = currentUser$.pipe(map(u => u.isLoggedIn));
 
-currentUser$.next({ isLoggedIn: false });
-isLoggedIn$.subscribe(createSubscriber("isLoggedIn"));
+// currentUser$.next({ isLoggedIn: false });
+// isLoggedIn$.subscribe(createSubscriber("isLoggedIn"));
 
-setTimeout(() => {
-    currentUser$.next({ isLoggedIn: true, name: "juan" });
-}, 3000)
+// setTimeout(() => {
+//     currentUser$.next({ isLoggedIn: true, name: "juan" });
+// }, 3000)
 
-setTimeout(() => {
-    isLoggedIn$.subscribe(createSubscriber("delayed"));
-}, 1500);
+// setTimeout(() => {
+//     isLoggedIn$.subscribe(createSubscriber("delayed"));
+// }, 1500);
+
+const replay$ = new ReplaySubject(3);
+replay$.next(1);
+replay$.next(2);
+
+replay$.subscribe(createSubscriber("one"));
+
+replay$.next(3);
+replay$.next(4);
+replay$.next(5);
+
+replay$.subscribe(createSubscriber("two"));
+
+replay$.next(6);
