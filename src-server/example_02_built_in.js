@@ -1,7 +1,5 @@
-import { timer } from "rxjs";
-import { take } from "rxjs/operators";
+import { of } from "rxjs";
 import { createSubscriber } from "./lib/util";
 
-timer(5000, 500)
-    .pipe(take(3))
-    .subscribe(createSubscriber("timer"))
+of("HELLO, WORLD")
+    .subscribe(createSubscriber("of"))
