@@ -1,5 +1,6 @@
-import { of } from "rxjs";
+import { of, from } from "rxjs";
 import { createSubscriber } from "./lib/util";
 
-of("HELLO, WORLD", 42, "whoa")
-    .subscribe(createSubscriber("of"))
+of(["this is an array", "hey"]).subscribe(createSubscriber("of"))
+
+from("hey").subscribe(createSubscriber("from"))
