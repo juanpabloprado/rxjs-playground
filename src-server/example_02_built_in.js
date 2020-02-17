@@ -3,4 +3,4 @@ import { createSubscriber } from "./lib/util";
 
 of(["this is an array", "hey"]).subscribe(createSubscriber("of"))
 
-from([23, 10, 4]).subscribe(createSubscriber("from"))
+from([1, 32, 42, "HEY"]).subscribe(createSubscriber("from"))
