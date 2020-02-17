@@ -1,30 +1,21 @@
-import { Observable } from 'rxjs';
+import { Observable } from "rxjs"
 
-const simple$ = new Observable(observer => {
-    console.log("Generating observable");
-    setTimeout(() => {
-        observer.next("An item!");
-        setTimeout(() => {
-            observer.next("Another item!");
-            observer.complete();
-        }, 1000);
-    }, 1000);
-});
+const createSubscriber = tag => {
+    return {
+        next: item => console.log(`${tag}.next ${item}`),
+        error: error => console.log(`${tag}.error ${error.stack || error}`),
+        complete: () => console.log(`${tag}.complete`)
+    };
+}
 
-const error$ = new Observable(observer => {
-    observer.error(new Error("STUFF"));
-});
+const createInterval$ = time => {
+    return new Observable(observer => {
+        let i = 0;
+        setInterval(() => {
+            observer.next(i++);
+        }, time)
+    });
+}
 
-error$.subscribe(
-    item => console.log(`one.next ${item}`),
-    error => console.log(`one.error ${error.stack}`),
-    () => console.log("one.complete")
-);
-
-setTimeout(() => {
-    simple$.subscribe({
-        next: item => console.log(`two.next ${item}`),
-        error: error => console.log(`two.error ${error}`),
-        complete: () => console.log("two.complete")
-    })
-}, 3000);
+const everySecond$ = createInterval$(1000);
+everySecond$.subscribe(createSubscriber("one"))
