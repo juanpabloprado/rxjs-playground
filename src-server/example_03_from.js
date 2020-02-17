@@ -1,11 +1,11 @@
 import fs from "fs"
-import { bindNodeCallback } from "rxjs";
-
-fs.readdir("./src-server", (err, items) => {
-    if (err) console.error(err);
-    else console.log(items);
-});
+import { bindNodeCallback, from } from "rxjs";
+import { createSubscriber } from "./lib/util";
+import { mergeMap, map } from "rxjs/operators";
 
 const readdir$ = bindNodeCallback(fs.readdir);
 
-console.log(typeof readdir$);
+readdir$("./src-server")
+    .pipe(mergeMap(files => from(files)))
+    .pipe(map(file => `MANIPULATED ${file}`))
+    .subscribe(createSubscriber("readdir"))
