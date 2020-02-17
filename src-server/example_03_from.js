@@ -9,3 +9,13 @@ readdir$("./src-server")
     .pipe(mergeMap(files => from(files)))
     .pipe(map(file => `MANIPULATED ${file}`))
     .subscribe(createSubscriber("readdir"))
+
+const getItem = () => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve("HELLO");
+        }, 1000);
+    });
+};
+
+from(getItem()).subscribe(createSubscriber("promise"));
