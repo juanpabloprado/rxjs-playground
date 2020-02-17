@@ -1,6 +1,15 @@
-import { of, from, throwError, empty, defer, NEVER, range } from "rxjs";
+import { of, from, throwError, empty, defer, NEVER, range, interval, timer } from "rxjs";
 import { createSubscriber } from "./lib/util";
+import { take } from "rxjs/operators";
 
+interval(500)
+    .pipe(take(5))
+    .subscribe(createSubscriber("interval"));
+
+timer(1000, 500)
+    .pipe(take(3))
+    .subscribe(createSubscriber("timer"));
+    
 of(["this is an array", "hey"]).subscribe(createSubscriber("of"))
 
 from([new Error("HEY")]).subscribe(createSubscriber("from"))
