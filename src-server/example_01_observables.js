@@ -1,4 +1,5 @@
 import { Observable } from "rxjs"
+import { take } from 'rxjs/operators';
 
 const createSubscriber = tag => {
     return {
@@ -11,11 +12,14 @@ const createSubscriber = tag => {
 const createInterval$ = time => {
     return new Observable(observer => {
         let i = 0;
-        setInterval(() => {
+        let interval = setInterval(() => {
+            console.log(`Generating ${i}`);
             observer.next(i++);
-        }, time)
+        }, time);
+
+        return () => { clearInterval(interval); }
     });
 }
 
 const everySecond$ = createInterval$(1000);
-everySecond$.subscribe(createSubscriber("one"))
+const subscription = everySecond$.pipe(take(3)).subscribe(createSubscriber("one"));
